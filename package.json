@@ -1,0 +1,15 @@
+{
+  "name": "simpleServerTemplate",
+  "version": "1.0.0",
+  "description": "Simple nodejs server template",
+  "main": "server.js",
+  "author": "Henrique Santos Azevedo",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "hbs": "^4.1.1",
+    "morgan": "^1.10.0"
+  }
+}
