@@ -1,7 +1,7 @@
 {
-  "name": "simpleServerTemplate",
+  "name": "SSHH",
   "version": "1.0.0",
-  "description": "Simple nodejs server template",
+  "description": "Simple Smart Home Hub",
   "main": "server.js",
   "author": "Henrique Santos Azevedo",
   "license": "ISC",
