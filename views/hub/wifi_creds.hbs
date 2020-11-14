@@ -1,0 +1,59 @@
+{{> header }}
+
+<script>jQuery('#menu-credentials').addClass('active')</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous"></script>
+<div class="page-header">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Credentials</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="javascript:">Smart Hub</a></li>
+                    <li class="breadcrumb-item"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ breadcrumb ] end -->
+<div class="main-body">
+    <div class="page-wrapper">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Scan me with the <span class="pcoded-badge label label-info">AddMe-App</span></h5>
+                    </div>
+                    <div class="card-block" align="center">
+                        <div id="qrcode"></div>
+                        <script type="text/javascript">
+                            let qrcode = new QRCode(document.getElementById("qrcode"), JSON.stringify({ssid: "{{wifi.creds.ssid}}", pass: "{{wifi.creds.wpa_passphrase}}", auth: "{{wifi.auth}}"}));
+                        </script>
+                        <br>
+                        <p>Scan this QR-Code with the AddMe-App to connect new devices!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Are there risks caused by creating new credentials?</h5>
+                    </div>
+                    <div class="card-block">
+                        <ul>
+                            <li>If you create new credentials while some of your devices are offline, these might not notice it and you'll have to add these again with the AddMe-App!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> end }}
