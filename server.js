@@ -23,9 +23,9 @@ colors.enable();
 
 //Use predefined function => initiate routes
 router(
-    app, 
+    app,
     [
-        {path: path.join(__dirname, 'router')}
+        { path: path.join(__dirname, 'router') }
     ]
 )
 
@@ -36,9 +36,22 @@ app.get('*', (req, res) => {
 app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(__dirname, "views", "partials"));
 
-hbs.registerHelper('json', function(context) {
+hbs.registerHelper('json', function (context) {
     return JSON.stringify(context);
 });
+
+hbs.registerHelper('time', function (context) {
+    let s = parseInt(context)*60000;
+    let ms = s % 1000;
+    s = (s - ms) / 1000;
+    let secs = s % 60;
+    s = (s - secs) / 60;
+    let mins = s % 60;
+    return (
+        (mins.toString().length == 1 ? `0${mins}` : mins) + ':' +
+        (secs.toString().length == 1 ? `0${secs}` : secs)
+    );
+})
 
 
 //Startup Server

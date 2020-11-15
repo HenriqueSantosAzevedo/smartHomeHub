@@ -27,7 +27,7 @@
     <div class="page-wrapper">
         <!-- [ Main Content ] start -->
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="card">
                     <div class="card-header">
                         <h5>Scan me with the <span class="pcoded-badge label label-info">AddMe-App</span></h5>
@@ -52,9 +52,11 @@
                                 aria-valuemax="100"></div>
                             <script>
                                 //Time units 'til code unusable
-                                let time_until_unusable = {{ wifi.auth.time }}
-                                let time_begin = new Date(Date.now())
-                                let when_unusable = time_begin.getTime() + time_until_unusable * 60000;
+                                let time_until_unusable = {{ wifi.auth.time_until_unusable }};
+                                let time_created = new Date({{ wifi.auth.time_created }})
+                                console.log({{ wifi.auth.time_created }})
+
+                                let when_unusable = time_created.getTime() + time_until_unusable * 60000;
 
 
                                 let max_time_diff = when_unusable - Date.now();
@@ -62,7 +64,11 @@
 
                                 let interval = setInterval(function () {
                                     let time_diff = when_unusable - Date.now();
-                                    if (time_diff < 10) return clearInterval(interval);
+                                    if (time_diff < 10) {
+                                        jQuery('#lifetime-progress-bar').attr('aria-valuenow', 0);
+                                        jQuery('#lifetime-progress-bar').css('width', 0 + '%');
+                                        return clearInterval(interval);
+                                    }
 
                                     let as_percent = parseInt((time_diff / max_time_diff) * 100);
                                     jQuery('#lifetime-progress-bar').attr('aria-valuenow', time_diff);
@@ -76,13 +82,15 @@
                                     var secs = s % 60;
                                     s = (s - secs) / 60;
                                     var mins = s % 60;
-                                    var hrs = (s - mins) / 60;
-                                    return mins + ':' + secs + ' mins';
+                                    return (
+                                        (mins.toString().length == 1 ? `0${mins}` : mins) + ':' + 
+                                        (secs.toString().length == 1 ? `0${secs}` : secs) + ' min'
+                                    );
                                 }
 
                             </script>
                         </div><br>
-                        <p>A new token will be generated automatically in <span id="time_display"></span></p>
+                        <p>A new token will be generated automatically in <span id="time_display">{{time wifi.auth.time_until_unusable }} min</span></p>
                     </div>
                 </div>
             </div>
