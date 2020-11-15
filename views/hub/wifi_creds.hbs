@@ -3,7 +3,9 @@
 <script>jQuery('#menu-credentials').addClass('active')</script>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
+    crossorigin="anonymous"></script>
 <div class="page-header">
     <div class="page-block">
         <div class="row align-items-center">
@@ -25,29 +27,107 @@
     <div class="page-wrapper">
         <!-- [ Main Content ] start -->
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
                         <h5>Scan me with the <span class="pcoded-badge label label-info">AddMe-App</span></h5>
                     </div>
                     <div class="card-block" align="center">
+                        <p>
+                            Follow the instructions on your phone to complete the process!
+                        </p>
+                        <p>
                         <div id="qrcode"></div>
+                        </p>
                         <script type="text/javascript">
-                            let qrcode = new QRCode(document.getElementById("qrcode"), JSON.stringify({ssid: "{{wifi.creds.ssid}}", pass: "{{wifi.creds.wpa_passphrase}}", auth: "{{wifi.auth}}"}));
+                            let qrcode = new QRCode(document.getElementById("qrcode"), JSON.stringify({ ssid: "{{wifi.creds.ssid}}", pass: "{{wifi.creds.wpa_passphrase}}", auth: "{{wifi.auth.code}}" }));
                         </script>
-                        <br>
                         <p>Scan this QR-Code with the AddMe-App to connect new devices!</p>
+                        <br>
+                        <p>Time until token is useless!</p>
+                        <div class="progress">
+                            <div id="lifetime-progress-bar"
+                                class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                                role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0"
+                                aria-valuemax="100"></div>
+                            <script>
+                                //Time units 'til code unusable
+                                let time_until_unusable = {{ wifi.auth.time }}
+                                let time_begin = new Date(Date.now())
+                                let when_unusable = time_begin.getTime() + time_until_unusable * 60000;
+
+
+                                let max_time_diff = when_unusable - Date.now();
+                                jQuery('#lifetime-progress-bar').attr('aria-valuemax', max_time_diff)
+
+                                let interval = setInterval(function () {
+                                    let time_diff = when_unusable - Date.now();
+                                    if (time_diff < 10) return clearInterval(interval);
+
+                                    let as_percent = parseInt((time_diff / max_time_diff) * 100);
+                                    jQuery('#lifetime-progress-bar').attr('aria-valuenow', time_diff);
+                                    jQuery('#lifetime-progress-bar').css('width', as_percent + '%');
+                                    jQuery('#time_display').text(msToTime(time_diff));
+                                }, 1000);
+
+                                function msToTime(s) {
+                                    var ms = s % 1000;
+                                    s = (s - ms) / 1000;
+                                    var secs = s % 60;
+                                    s = (s - secs) / 60;
+                                    var mins = s % 60;
+                                    var hrs = (s - mins) / 60;
+                                    return mins + ':' + secs + ' mins';
+                                }
+
+                            </script>
+                        </div><br>
+                        <p>A new token will be generated automatically in <span id="time_display"></span></p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Are there risks caused by creating new credentials?</h5>
+                        <h5>Hub-Information</h5>
                     </div>
                     <div class="card-block">
-                        <ul>
-                            <li>If you create new credentials while some of your devices are offline, these might not notice it and you'll have to add these again with the AddMe-App!</li>
+                        <p>Country code: {{wifi.creds.country_code}}</p>
+                        <p>WiFi-Interface: {{wifi.creds.interface}}</p>
+                        <p>SSID: {{wifi.creds.ssid}}</p>
+                        <p>Channel: {{wifi.creds.channel}}</p>
+                        <p>Visibility: {{wifi.creds.ignore_broadcast_ssid}}</p>
+                        <p>Wpa: {{wifi.creds.wpa}}</p>
+                        <p>Passphrase {{wifi.creds.wpa_passphrase}}</p>
+
+                        <button class="btn bg-info text-white">Generate credentials</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>FAQ</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li>
+                                <h6>Are there any risks by changing the credentials?</h6>
+                                <span>Yes! you might need to reinstall those devices, which were offline during the
+                                    process!</span>
+                            </li>
+                            <hr><br>
+                            <li>
+                                <h6>Why would I need to recreate the credentials?</h6>
+                                <span>For your own security, you should be creating new strong passphrases every once in
+                                    a while!</span>
+                            </li>
+                            <hr><br>
+                            <li>
+                                <h6>Where may I create new credentials?</h6>
+                                <span>As your security is a very important topic, our software is capable of creating
+                                    new strong passphrases by it self!</span>
+                            </li>
                         </ul>
                     </div>
                 </div>
