@@ -83,35 +83,53 @@
                                     s = (s - secs) / 60;
                                     var mins = s % 60;
                                     return (
-                                        (mins.toString().length == 1 ? `0${mins}` : mins) + ':' + 
+                                        (mins.toString().length == 1 ? `0${mins}` : mins) + ':' +
                                         (secs.toString().length == 1 ? `0${secs}` : secs) + ' min'
                                     );
                                 }
 
                             </script>
                         </div><br>
-                        <p>A new token will be generated automatically in <span id="time_display">{{time wifi.auth.time_until_unusable }} min</span></p>
+                        <p>A new token will be generated automatically in <span
+                                id="time_display">{{time wifi.auth.time_until_unusable }} min</span></p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Hub-Information</h5>
-                    </div>
-                    <div class="card-block">
-                        <p>Country code: {{wifi.creds.country_code}}</p>
-                        <p>WiFi-Interface: {{wifi.creds.interface}}</p>
-                        <p>SSID: {{wifi.creds.ssid}}</p>
-                        <p>Channel: {{wifi.creds.channel}}</p>
-                        <p>Visibility: {{wifi.creds.ignore_broadcast_ssid}}</p>
-                        <p>Wpa: {{wifi.creds.wpa}}</p>
-                        <p>Passphrase {{wifi.creds.wpa_passphrase}}</p>
+            <div class="col-sm-8">
+                <div class="column">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Hub-Information</h5>
+                            </div>
+                            <div class="card-block">
+                                <p>Country code: {{wifi.creds.country_code}}</p>
+                                <p>WiFi-Interface: {{wifi.creds.interface}}</p>
+                                <p>SSID: {{wifi.creds.ssid}}</p>
+                                <p>Channel: {{wifi.creds.channel}}</p>
+                                <p>Visibility: {{wifi.creds.ignore_broadcast_ssid}}</p>
+                                <p>Wpa: {{wifi.creds.wpa}}</p>
+                                <p>Passphrase {{wifi.creds.wpa_passphrase}}</p>
 
-                        <button class="btn bg-info text-white">Generate credentials</button>
+                                <button class="btn bg-info text-white">Generate credentials</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="mb-0"><a href="#!" data-toggle="collapse" data-target="#collapseOne"
+                                        aria-expanded="false" aria-controls="collapseOne" class="collapsed">Network Status</a></h5>
+                            </div>
+                            <div id="collapseOne" class="card-body collapse" aria-labelledby="headingOne"
+                                data-parent="#accordionExample" style="">
+                                <p>{{wifi.status}}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
